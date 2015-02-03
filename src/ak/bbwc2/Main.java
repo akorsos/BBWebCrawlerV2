@@ -8,11 +8,12 @@ import javax.swing.text.html.*;
 import javax.swing.text.html.parser.*;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Reader reader;
 
         try{
-            URL u = new URL("https://bluebox.com");
+
+            URL u = new URL("http://www.google.com");
 
             //Create inputStream
             InputStream input = u.openStream();
@@ -36,7 +37,15 @@ public class Main {
                         //Create an enum to house elements
                         Enumeration attrNames = a.getAttributeNames();
 
+                        //Iterate over elements to find actual links
+                        while(attrNames.hasMoreElements()) {
+                            Object key = attrNames.nextElement();
 
+                            //Attribute href denotes a legitimate link
+                            if("href".equals(key.toString())) {
+                                System.out.println(a.getAttribute(key));
+                            }
+                        }
                     }
                 }
             }, true);
