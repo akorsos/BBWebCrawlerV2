@@ -1,6 +1,7 @@
 package ak.bbwc2;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import javax.swing.text.MutableAttributeSet;
@@ -10,10 +11,12 @@ import javax.swing.text.html.parser.*;
 public class Main {
     public static void main(String[] args) {
         Reader reader;
+        String strURL;
 
         try{
+            strURL = args[0];
 
-            URL u = new URL("http://www.google.com");
+            URL u = new URL(strURL);
 
             //Create inputStream
             InputStream input = u.openStream();
@@ -35,11 +38,11 @@ public class Main {
                     if(t == HTML.Tag.A)  {
 
                         //Create an enum to house elements
-                        Enumeration attrNames = a.getAttributeNames();
+                        Enumeration attributeNames = a.getAttributeNames();
 
                         //Iterate over elements to find actual links
-                        while(attrNames.hasMoreElements()) {
-                            Object key = attrNames.nextElement();
+                        while(attributeNames.hasMoreElements()) {
+                            Object key = attributeNames.nextElement();
 
                             //Attribute href denotes a legitimate link
                             if("href".equals(key.toString())) {
@@ -50,8 +53,10 @@ public class Main {
                 }
             }, true);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (MalformedURLException m) {
+            m.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 }
